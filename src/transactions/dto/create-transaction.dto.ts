@@ -1,4 +1,4 @@
-import { ArrayContains, IsNotEmpty } from 'class-validator';
+import { ArrayContains, IsNotEmpty, Length } from 'class-validator';
 import { methodPayment } from '../schemas/transaction.schema';
 
 export class CreateTransactionDto {
@@ -9,7 +9,9 @@ export class CreateTransactionDto {
   value: number;
 
   @IsNotEmpty()
-  @ArrayContains(methodPayment)
+  @ArrayContains(methodPayment, {
+    message: 'O método de pagamento deve cartão de crédito ou cartão de débito',
+  })
   method_payment: string;
 
   @IsNotEmpty()
@@ -22,5 +24,8 @@ export class CreateTransactionDto {
   card_validate: string;
 
   @IsNotEmpty()
+  @Length(3, 3, {
+    message: 'O CVV precisa ter exatamente 3 digitos',
+  })
   card_security: string;
 }
