@@ -5,7 +5,7 @@
 
 Você deve criar um serviço com os seguintes requisitos:
 
-1. [] O serviço deve processar transações, recebendo as seguintes informações:
+1. [x] O serviço deve processar transações, recebendo as seguintes informações:
    - Valor da transação
    - Descrição da transação. Ex: 'Smartband XYZ 3.0'
    - Método de pagamento (debit_card ou credit_card)
