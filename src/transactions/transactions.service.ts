@@ -12,12 +12,14 @@ export class TransactionsService {
   ) {}
 
   async create(createTransactionDto: CreateTransactionDto) {
-    const createdCat = await this.TransactionModel.create(createTransactionDto);
-    return createdCat;
+    const transaction =
+      await this.TransactionModel.create(createTransactionDto);
+    return transaction;
   }
 
-  findAll() {
-    return `This action returns all transactions`;
+  async findAll() {
+    const transactions = await this.TransactionModel.find();
+    return transactions;
   }
 
   findOne(id: number) {

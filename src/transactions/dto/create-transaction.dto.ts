@@ -1,5 +1,6 @@
-import { ArrayContains, IsNotEmpty, Length } from 'class-validator';
-import { methodPayment } from '../schemas/transaction.schema';
+import { IsNotEmpty, Length } from 'class-validator';
+import { Transform } from 'class-transformer';
+// import { methodPayment } from '../schemas/transaction.schema';
 
 export class CreateTransactionDto {
   @IsNotEmpty()
@@ -9,12 +10,13 @@ export class CreateTransactionDto {
   value: number;
 
   @IsNotEmpty()
-  @ArrayContains(methodPayment, {
-    message: 'O método de pagamento deve cartão de crédito ou cartão de débito',
-  })
+  // @ArrayContains(methodPayment, {
+  //   message: 'O método de pagamento deve cartão de crédito ou cartão de débito',
+  // })
   method_payment: string;
 
   @IsNotEmpty()
+  @Transform(({ value }) => value.slice(-4))
   card_number: string;
 
   @IsNotEmpty()
