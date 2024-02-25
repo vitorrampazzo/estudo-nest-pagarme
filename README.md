@@ -14,7 +14,7 @@ Você deve criar um serviço com os seguintes requisitos:
    - Data de validade do cartão
    - Código de verificação do cartão (CVV)
 2. [x] O serviço deve retornar uma lista das transações já criadas
-3. [] Como o número do cartão é uma informação sensível, o serviço só pode armazenar e retornar os 4 últimos dígitos do cartão.
+3. [x] Como o número do cartão é uma informação sensível, o serviço só pode armazenar e retornar os 4 últimos dígitos do cartão.
 4. [] O serviço deve criar os recebíveis do cliente (payables), com as seguintes regras:
    - Se a transação for feita com um cartão de débito:
      - [] O payable deve ser criado com status = paid (indicando que o cliente já recebeu esse valor)
