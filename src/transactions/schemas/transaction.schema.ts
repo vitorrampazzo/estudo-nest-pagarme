@@ -5,7 +5,7 @@ export type TransactionDocument = HydratedDocument<Transaction>;
 
 export const methodPayment = ['debit_card', 'credit_card'];
 
-@Schema()
+@Schema({ timestamps: true })
 export class Transaction {
   @Prop({ required: true })
   description: string;

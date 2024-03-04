@@ -10,5 +10,6 @@ import { Payable, PayableSchema } from './schemas/payable.schema';
   imports: [
     MongooseModule.forFeature([{ name: Payable.name, schema: PayableSchema }]),
   ],
+  exports: [PayablesService],
 })
 export class PayablesModule {}

@@ -3,7 +3,7 @@ import { HydratedDocument } from 'mongoose';
 
 export type PayableDocument = HydratedDocument<Payable>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Payable {
   @Prop({ required: true })
   status: string;
