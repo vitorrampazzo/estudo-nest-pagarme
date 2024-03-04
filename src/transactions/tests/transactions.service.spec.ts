@@ -4,9 +4,12 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { getModelToken } from '@nestjs/mongoose';
 import mongoose, { Connection } from 'mongoose';
 import { TransactionSchema } from '../schemas/transaction.schema';
+import { PayablesService } from '../../payables/payables.service';
+import { PayableSchema } from '../../payables/schemas/payable.schema';
 
 describe('TransactionService', () => {
   let service: TransactionsService;
+  let payableService: PayablesService;
   let mongod: MongoMemoryServer;
   let connection: Connection;
 
@@ -26,10 +29,20 @@ describe('TransactionService', () => {
           provide: getModelToken('Transaction'),
           useFactory: () => connection.model('Transaction', TransactionSchema),
         },
+        PayablesService,
+        {
+          provide: 'DATABASE_CONNECTION',
+          useValue: connection,
+        },
+        {
+          provide: getModelToken('Payable'),
+          useFactory: () => connection.model('Payable', PayableSchema),
+        },
       ],
     }).compile();
 
     service = module.get<TransactionsService>(TransactionsService);
+    payableService = module.get<PayablesService>(PayablesService);
   });
 
   afterAll(async () => {
@@ -47,6 +60,7 @@ describe('TransactionService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+    expect(payableService).toBeDefined();
     expect(connection).toBeDefined();
   });
 
@@ -77,8 +91,10 @@ describe('TransactionService', () => {
       card_validate: '2028-12-10',
       card_security: '132',
     };
+
     await service.create(data);
     const transactions = await service.findAll();
+
     expect(transactions).toMatchObject([data]);
   });
 });

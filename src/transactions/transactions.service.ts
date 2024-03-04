@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Transaction } from './schemas/transaction.schema';
 import { transactionResponseDto } from './dto/transaction.dto';
-import { PayablesService } from 'src/payables/payables.service';
+import { PayablesService } from '../payables/payables.service';
 
 @Injectable()
 export class TransactionsService {
@@ -21,8 +21,7 @@ export class TransactionsService {
     try {
       const transaction =
         await this.TransactionModel.create(createTransactionDto);
-
-      await this.payablesService.create(createTransactionDto);
+      await this.payablesService.create(transaction);
       return transaction;
     } catch (error) {
       this.logger.error(error);

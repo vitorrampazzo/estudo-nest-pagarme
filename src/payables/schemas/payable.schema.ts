@@ -1,10 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, SchemaTypes, Types } from 'mongoose';
+import { Transaction } from '../../transactions/schemas/transaction.schema';
 
 export type PayableDocument = HydratedDocument<Payable>;
 
 @Schema({ timestamps: true })
 export class Payable {
+  @Prop({ type: SchemaTypes.ObjectId, ref: Transaction.name })
+  transaction: Types.ObjectId;
+
   @Prop({ required: true })
   status: string;
 
