@@ -32,8 +32,19 @@ export class TransactionsService {
 
   async findAllByCardOwnerAndCardNumber(
     data: GetTransactionByCardAndDateOwnerDto,
-  ): Promise<transactionResponseDto[]> {
+  ): Promise<{
+    available: transactionResponseDto[];
+    waiting_funds: transactionResponseDto[];
+  }> {
     this.logger.log(`Find All By Card Owner: ${data}`);
-    return await this.TransactionModel.find({ ...data });
+    const transactions = await Promise.all([
+      this.TransactionModel.find({ ...data, method_payment: 'debit_card' }),
+      this.TransactionModel.find({ ...data, method_payment: 'credit_card' }),
+    ]);
+
+    return {
+      available: transactions[0],
+      waiting_funds: transactions[1],
+    };
   }
 }

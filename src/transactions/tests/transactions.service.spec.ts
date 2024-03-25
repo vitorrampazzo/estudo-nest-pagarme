@@ -98,7 +98,10 @@ describe('TransactionService', () => {
       card_number: transaction.card_number,
     });
 
-    expect(transactions).toMatchObject([transaction]);
+    expect(transactions).toMatchObject({
+      available: [transaction],
+      waiting_funds: [],
+    });
   });
 
   it('should return empty trying to get a transaction by wrong CardOwner and CardNumber', async () => {
@@ -118,6 +121,9 @@ describe('TransactionService', () => {
       card_number: '1234',
     });
 
-    expect(transactions).toMatchObject([]);
+    expect(transactions).toMatchObject({
+      available: [],
+      waiting_funds: [],
+    });
   });
 });
