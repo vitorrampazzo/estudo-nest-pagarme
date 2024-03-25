@@ -24,7 +24,10 @@ export class TransactionsController {
   @Get()
   async findAllByCardOwner(
     @Query() query: GetTransactionByCardAndDateOwnerDto,
-  ): Promise<transactionResponseDto[]> {
+  ): Promise<{
+    available: transactionResponseDto[];
+    waiting_funds: transactionResponseDto[];
+  }> {
     const transaction =
       await this.transactionsService.findAllByCardOwnerAndCardNumber(query);
     return transaction;
