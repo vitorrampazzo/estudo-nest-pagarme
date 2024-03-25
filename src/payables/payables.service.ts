@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { payableFromDebitTransaction } from './domain/payableDebitTransaction.domain';
 import { payableFromCreditTransaction } from './domain/payableCreditTransaction.domain';
 import { IPayableTransaction } from './domain/IpayableTransaction.interface';
+import { CreateTransactionDto } from 'src/transactions/dto/create-transaction.dto';
 
 @Injectable()
 export class PayablesService {
@@ -15,11 +16,7 @@ export class PayablesService {
     private readonly PayableModel: Model<Payable>,
   ) {}
 
-  async findAll() {
-    return await this.PayableModel.find();
-  }
-
-  async create(createTransactionDto: any) {
+  async create(createTransactionDto: CreateTransactionDto) {
     try {
       const payableFactories = {
         debit_card: payableFromDebitTransaction,

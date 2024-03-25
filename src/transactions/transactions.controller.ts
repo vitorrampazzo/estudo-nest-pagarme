@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Logger, Query } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { transactionResponseDto } from './dto/transaction.dto';
+import { GetTransactionByCardAndDateOwnerDto } from './dto/get-transactions-by-card-and-date-owner.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -17,12 +18,15 @@ export class TransactionsController {
     const transaction =
       await this.transactionsService.create(createTransactionDto);
 
-    return transaction.toJSON();
+    return transaction;
   }
 
   @Get()
-  async findAll(): Promise<transactionResponseDto[]> {
-    const transaction = await this.transactionsService.findAll();
+  async findAllByCardOwner(
+    @Query() query: GetTransactionByCardAndDateOwnerDto,
+  ): Promise<transactionResponseDto[]> {
+    const transaction =
+      await this.transactionsService.findAllByCardOwnerAndCardNumber(query);
     return transaction;
   }
 }

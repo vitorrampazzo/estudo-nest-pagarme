@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { Transaction } from './schemas/transaction.schema';
 import { transactionResponseDto } from './dto/transaction.dto';
 import { PayablesService } from '../payables/payables.service';
+import { GetTransactionByCardAndDateOwnerDto } from './dto/get-transactions-by-card-and-date-owner.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -19,7 +20,7 @@ export class TransactionsService {
   @Inject(PayablesService)
   async create(createTransactionDto: CreateTransactionDto) {
     try {
-      const transaction =
+      const transaction: CreateTransactionDto =
         await this.TransactionModel.create(createTransactionDto);
       await this.payablesService.create(transaction);
       return transaction;
@@ -29,8 +30,10 @@ export class TransactionsService {
     }
   }
 
-  async findAll(): Promise<transactionResponseDto[]> {
-    const transactions = await this.TransactionModel.find();
-    return transactions;
+  async findAllByCardOwnerAndCardNumber(
+    data: GetTransactionByCardAndDateOwnerDto,
+  ): Promise<transactionResponseDto[]> {
+    this.logger.log(`Find All By Card Owner: ${data}`);
+    return await this.TransactionModel.find({ ...data });
   }
 }

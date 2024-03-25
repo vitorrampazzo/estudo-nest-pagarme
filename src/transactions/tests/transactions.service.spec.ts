@@ -81,8 +81,8 @@ describe('TransactionService', () => {
     expect(createdTransaction.value).toBe(100);
   });
 
-  it('should get a transaction', async () => {
-    const data = {
+  it('should get a transaction by CardOwner and CardNumber', async () => {
+    const transaction = {
       description: 'Teste',
       value: 100,
       method_payment: 'debit_card',
@@ -92,9 +92,32 @@ describe('TransactionService', () => {
       card_security: '132',
     };
 
-    await service.create(data);
-    const transactions = await service.findAll();
+    await service.create(transaction);
+    const transactions = await service.findAllByCardOwnerAndCardNumber({
+      card_owner: transaction.card_owner,
+      card_number: transaction.card_number,
+    });
 
-    expect(transactions).toMatchObject([data]);
+    expect(transactions).toMatchObject([transaction]);
+  });
+
+  it('should return empty trying to get a transaction by wrong CardOwner and CardNumber', async () => {
+    const transaction = {
+      description: 'Teste',
+      value: 100,
+      method_payment: 'debit_card',
+      card_number: '1234567890',
+      card_owner: 'Vitor Rampazzo',
+      card_validate: '2028-12-10',
+      card_security: '132',
+    };
+
+    await service.create(transaction);
+    const transactions = await service.findAllByCardOwnerAndCardNumber({
+      card_owner: transaction.card_owner,
+      card_number: '1234',
+    });
+
+    expect(transactions).toMatchObject([]);
   });
 });
